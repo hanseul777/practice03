@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.zerock.practice03.board.mapper.BoardMapper"><!--namespace : 패키지명이랑 맞춰주기  namespace + id = 풀네임-->
+
+    <insert id="insert">
+        insert tbl_board (title,content,writer)
+        values (#{title},#{content},#{writer})
+        <selectKey order="AFTER" resultType="long" keyProperty="bno"><!--keyProperty : 키값을 어디에 둘 것인-->
+            select last_insert_id()
+        </selectKey>
+    </insert>
+
+    <select id="getList" resultType="org.zerock.practice03.board.domain.Board">
+        select * from tbl_board order by bno desc limit 0,100
+    </select>
+
+    <select id="select" resultType="org.zerock.practice03.board.domain.Board">
+        select * from tbl_board where bno = #{bno}
+    </select>
+
+    <delete id="delete">
+        delete from tbl_board where bno = #{bno}
+    </delete>
+
+    <update id="update">
+        update tbl_board set title=#{title}, content = #{content}, modDate = now()
+        where bno = #{bno}
+    </update>
+</mapper>
